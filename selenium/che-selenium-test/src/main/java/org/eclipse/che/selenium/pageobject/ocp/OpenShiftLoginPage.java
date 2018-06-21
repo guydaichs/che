@@ -8,33 +8,29 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.selenium.pageobject.site;
+package org.eclipse.che.selenium.pageobject.ocp;
 
 import static java.util.Arrays.asList;
-import static org.eclipse.che.selenium.pageobject.site.CheLoginPage.Locators.LOGIN_BUTTON_NAME;
-import static org.eclipse.che.selenium.pageobject.site.CheLoginPage.Locators.OPEN_SHIFT_OAUTH_LINK_ID;
-import static org.eclipse.che.selenium.pageobject.site.CheLoginPage.Locators.PASSWORD_FIELD_NAME;
-import static org.eclipse.che.selenium.pageobject.site.CheLoginPage.Locators.USERNAME_FIELD_NAME;
+import static org.eclipse.che.selenium.pageobject.ocp.OpenShiftLoginPage.Locators.LOGIN_BUTTON_XPATH;
+import static org.eclipse.che.selenium.pageobject.ocp.OpenShiftLoginPage.Locators.PASSWORD_FIELD_NAME;
+import static org.eclipse.che.selenium.pageobject.ocp.OpenShiftLoginPage.Locators.USERNAME_FIELD_NAME;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.eclipse.che.selenium.core.SeleniumWebDriver;
 import org.eclipse.che.selenium.core.webdriver.SeleniumWebDriverHelper;
+import org.eclipse.che.selenium.pageobject.site.LoginPage;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-/** @author Dmytro Nochevnov */
-@Singleton
-public class CheLoginPage implements LoginPage {
+public class OpenShiftLoginPage implements LoginPage {
   private final SeleniumWebDriverHelper seleniumWebDriverHelper;
 
   protected interface Locators {
     String USERNAME_FIELD_NAME = "username";
     String PASSWORD_FIELD_NAME = "password";
-    String LOGIN_BUTTON_NAME = "login";
-    String OPEN_SHIFT_OAUTH_LINK_ID = "zocial-openshift-v3";
+    String LOGIN_BUTTON_XPATH = "//button[contains(text(),'Log In')]";
   }
 
   @FindBy(name = USERNAME_FIELD_NAME)
@@ -43,14 +39,11 @@ public class CheLoginPage implements LoginPage {
   @FindBy(name = PASSWORD_FIELD_NAME)
   private WebElement passwordInput;
 
-  @FindBy(name = LOGIN_BUTTON_NAME)
+  @FindBy(xpath = LOGIN_BUTTON_XPATH)
   private WebElement loginButton;
 
-  @FindBy(id = OPEN_SHIFT_OAUTH_LINK_ID)
-  private WebElement openShiftOAuthLink;
-
   @Inject
-  public CheLoginPage(
+  public OpenShiftLoginPage(
       SeleniumWebDriver seleniumWebDriver, SeleniumWebDriverHelper seleniumWebDriverHelper) {
     this.seleniumWebDriverHelper = seleniumWebDriverHelper;
 
@@ -66,11 +59,6 @@ public class CheLoginPage implements LoginPage {
     seleniumWebDriverHelper.waitAndClick(loginButton);
 
     waitOnClose();
-  }
-
-  public void loginWithOpenShiftOAuth() {
-    waitOnOpen();
-    seleniumWebDriverHelper.waitAndClick(openShiftOAuthLink);
   }
 
   @Override
